@@ -1,4 +1,4 @@
-<div class="apidocDiv">
+<html><head></head><body><div class="apidocDiv">
 <style>
 /*csslint
 */
@@ -47,17 +47,10 @@
 }
 </style>
 <h1>api documentation for
-    <a
-
-        href="https://github.com/outatime/grunt-replace#readme"
-
-    >grunt-replace (v1.0.1)</a>
+    <a href="https://github.com/outatime/grunt-replace#readme">grunt-replace (v1.0.1)</a>
 </h1>
 <h4>Replace text patterns with applause.</h4>
-<div class="apidocSectionDiv"><a
-    href="#apidoc.tableOfContents"
-    id="apidoc.tableOfContents"
-><h1>table of contents</h1></a><ol>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.grunt-replace">module grunt-replace</a><ol>
 
@@ -108,24 +101,24 @@
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">grunt-replace = function (grunt) {
-  var path = require(&#x27;path&#x27;);
-  var fs = require(&#x27;fs&#x27;);
-  var chalk = require(&#x27;chalk&#x27;);
-  var _ = require(&#x27;lodash&#x27;);
-  var Applause = require(&#x27;applause&#x27;);
-  var fileSyncCmp = require(&#x27;file-sync-cmp&#x27;);
-  var isWindows = process.platform === &#x27;win32&#x27;;
+  var path = require('path');
+  var fs = require('fs');
+  var chalk = require('chalk');
+  var _ = require('lodash');
+  var Applause = require('applause');
+  var fileSyncCmp = require('file-sync-cmp');
+  var isWindows = process.platform === 'win32';
   // fns
   var detectDestType = function(dest) {
-    if (_.endsWith(dest, &#x27;/&#x27;)) {
-      return &#x27;directory&#x27;;
+    if (_.endsWith(dest, '/')) {
+      return 'directory';
     } else {
-      return &#x27;file&#x27;;
+      return 'file';
     }
   };
   var unixifyPath = function(filepath) {
     if (isWindows) {
-      return filepath.replace(/\\/g, &#x27;/&#x27;);
+      return filepath.replace(/\\/g, '/');
     } else {
       return filepath;
     }
@@ -135,10 +128,10 @@
     if (path.basename(src) !== path.basename(dest)) {
       return;
     }
-    if (stat.isFile() &#x26;&#x26; !fileSyncCmp.equalFiles(src, dest)) {
+    if (stat.isFile() &amp;&amp; !fileSyncCmp.equalFiles(src, dest)) {
       return;
     }
-    var fd = fs.openSync(dest, isWindows ? &#x27;r+&#x27; : &#x27;r&#x27;);
+    var fd = fs.openSync(dest, isWindows ? 'r+' : 'r');
     fs.futimesSync(fd, stat.atime, stat.mtime);
     fs.closeSync(fd);
   };
@@ -161,7 +154,7 @@
           }
         }
         if (result !== false) {
-          grunt.verbose.writeln(&#x27;Replace &#x27; + chalk.cyan(source) + &#x27; → &#x27; +
+          grunt.verbose.writeln('Replace ' + chalk.cyan(source) + ' â†’ ' +
             chalk.green(target));
         }
         return result;
@@ -172,8 +165,8 @@
   };
   // register task
   grunt.registerMultiTask(
-    &#x27;replace&#x27;,
-    &#x27;Replace text patterns with applause.&#x27;,
+    'replace',
+    'Replace text patterns with applause.',
     function() {
       // took options
       var options = this.options({
@@ -192,37 +185,37 @@
       var patterns = options.patterns;
       if (options.excludeBuiltins !== true) {
         patterns.push({
-          match: &#x27;__SOURCE_FILE__&#x27;,
+          match: '__SOURCE_FILE__',
           replacement: function(match, offset, string, source) {
             return source;
           },
           builtin: true
         }, {
-          match: &#x27;__SOURCE_PATH__&#x27;,
+          match: '__SOURCE_PATH__',
           replacement: function(match, offset, string, source) {
             return path.dirname(source);
           },
           builtin: true
         }, {
-          match: &#x27;__SOURCE_FILENAME__&#x27;,
+          match: '__SOURCE_FILENAME__',
           replacement: function(match, offset, string, source) {
             return path.basename(source);
           },
           builtin: true
         }, {
-          match: &#x27;__TARGET_FILE__&#x27;,
+          match: '__TARGET_FILE__',
           replacement: function(match, offset, string, source, target) {
             return target;
           },
           builtin: true
         }, {
-          match: &#x27;__TARGET_PATH__&#x27;,
+          match: '__TARGET_PATH__',
           replacement: function(match, offset, string, source, target) {
             return path.dirname(target);
           },
           builtin: true
         }, {
-          match: &#x27;__TARGET_FILENAME__&#x27;,
+          match: '__TARGET_FILENAME__',
           replacement: function(match, offset, string, source, target) {
             return path.basename(target);
           },
@@ -291,3 +284,4 @@
     ]
 </div>
 </div>
+</body></html>

@@ -61,12 +61,227 @@
 
     <li class="apidocModuleLi"><a href="#apidoc.module.grunt-replace">module grunt-replace</a><ol>
 
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.grunt-replace.grunt-replace">
+            function <span class="apidocSignatureSpan"></span>grunt-replace
+            <span class="apidocSignatureSpan">(grunt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.grunt-replace.toString">
+            function <span class="apidocSignatureSpan">grunt-replace.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.grunt-replace.toString">module grunt-replace.toString</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.grunt-replace.toString.toString">
+            function <span class="apidocSignatureSpan">grunt-replace.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.grunt-replace" id="apidoc.module.grunt-replace">module grunt-replace</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.grunt-replace.grunt-replace" id="apidoc.element.grunt-replace.grunt-replace">
+        function <span class="apidocSignatureSpan"></span>grunt-replace
+        <span class="apidocSignatureSpan">(grunt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">grunt-replace = function (grunt) {
+  var path = require(&#x27;path&#x27;);
+  var fs = require(&#x27;fs&#x27;);
+  var chalk = require(&#x27;chalk&#x27;);
+  var _ = require(&#x27;lodash&#x27;);
+  var Applause = require(&#x27;applause&#x27;);
+  var fileSyncCmp = require(&#x27;file-sync-cmp&#x27;);
+  var isWindows = process.platform === &#x27;win32&#x27;;
+  // fns
+  var detectDestType = function(dest) {
+    if (_.endsWith(dest, &#x27;/&#x27;)) {
+      return &#x27;directory&#x27;;
+    } else {
+      return &#x27;file&#x27;;
+    }
+  };
+  var unixifyPath = function(filepath) {
+    if (isWindows) {
+      return filepath.replace(/\\/g, &#x27;/&#x27;);
+    } else {
+      return filepath;
+    }
+  };
+  var syncTimestamp = function(src, dest) {
+    var stat = fs.lstatSync(src);
+    if (path.basename(src) !== path.basename(dest)) {
+      return;
+    }
+    if (stat.isFile() &#x26;&#x26; !fileSyncCmp.equalFiles(src, dest)) {
+      return;
+    }
+    var fd = fs.openSync(dest, isWindows ? &#x27;r+&#x27; : &#x27;r&#x27;);
+    fs.futimesSync(fd, stat.atime, stat.mtime);
+    fs.closeSync(fd);
+  };
+  var replace = function(source, target, options, applause) {
+    var res;
+    grunt.file.copy(source, target, {
+      encoding: options.encoding,
+      process: function(content) {
+        res = applause.replace(content, [source, target]);
+        var result = res.content;
+        var count = res.count;
+        // force contents
+        if (count === 0) {
+          // no matches
+          if (options.force === true) {
+            result = content;
+          } else {
+            // ignore copy
+            result = false;
+          }
+        }
+        if (result !== false) {
+          grunt.verbose.writeln(&#x27;Replace &#x27; + chalk.cyan(source) + &#x27; → &#x27; +
+            chalk.green(target));
+        }
+        return result;
+      },
+      noProcess: options.noProcess || options.processContentExclude
+    });
+    return res;
+  };
+  // register task
+  grunt.registerMultiTask(
+    &#x27;replace&#x27;,
+    &#x27;Replace text patterns with applause.&#x27;,
+    function() {
+      // took options
+      var options = this.options({
+        encoding: grunt.file.defaultEncoding,
+        // processContent/processContentExclude deprecated renamed to process/noProcess
+        processContentExclude: [],
+        mode: false,
+        timestamp: false,
+        patterns: [],
+        excludeBuiltins: false,
+        force: true,
+        silent: false,
+        pedantic: false
+      });
+      // attach builtins
+      var patterns = options.patterns;
+      if (options.excludeBuiltins !== true) {
+        patterns.push({
+          match: &#x27;__SOURCE_FILE__&#x27;,
+          replacement: function(match, offset, string, source) {
+            return source;
+          },
+          builtin: true
+        }, {
+          match: &#x27;__SOURCE_PATH__&#x27;,
+          replacement: function(match, offset, string, source) {
+            return path.dirname(source);
+          },
+          builtin: true
+        }, {
+          match: &#x27;__SOURCE_FILENAME__&#x27;,
+          replacement: function(match, offset, string, source) {
+            return path.basename(source);
+          },
+          builtin: true
+        }, {
+          match: &#x27;__TARGET_FILE__&#x27;,
+          replacement: function(match, offset, string, source, target) {
+            return target;
+          },
+          builtin: true
+        }, {
+          match: &#x27;__TARGET_PATH__&#x27;,
+          replacement: function(match, offset, string, source, target) {
+            return path.dirname(target);
+          },
+          builtin: true
+        }, {
+          match: &#x27;__TARGET_FILENAME__&#x27;,
+          replacement: function(match, offset, string, source, target) {
+            return path.basename(target);
+          },
+          builtin: true
+        });
+      }
+      // create applause instance
+      var applause = Applause.create(_.extend({}, options, {
+        // pass
+      }));
+      // took code from copy task
+      var isExpandedPair;
+      var dirs = {};
+      var tally = {
+        dirs: 0,
+        files: 0,
+        replacements: 0,
+        details: []
+      };
+      this.files.forEach(function(filePair) {
+        isExpandedPair = filePair.orig.expand || false;
+        filePair.src.forEach(function(src) {
+          src = unixifyPath(src); ...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.grunt-replace.toString" id="apidoc.element.grunt-replace.toString">
+        function <span class="apidocSignatureSpan">grunt-replace.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return text;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.grunt-replace.toString" id="apidoc.module.grunt-replace.toString">module grunt-replace.toString</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.grunt-replace.toString.toString" id="apidoc.element.grunt-replace.toString.toString">
+        function <span class="apidocSignatureSpan">grunt-replace.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 </div>
 
