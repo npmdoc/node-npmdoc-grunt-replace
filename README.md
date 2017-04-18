@@ -1,9 +1,14 @@
-# api documentation for  [grunt-replace (v1.0.1)](https://github.com/outatime/grunt-replace#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-grunt-replace.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-grunt-replace) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-grunt-replace.svg)](https://travis-ci.org/npmdoc/node-npmdoc-grunt-replace)
+# npmdoc-grunt-replace
+
+#### api documentation for  [grunt-replace (v1.0.1)](https://github.com/outatime/grunt-replace#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-grunt-replace.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-grunt-replace) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-grunt-replace.svg)](https://travis-ci.org/npmdoc/node-npmdoc-grunt-replace)
+
 #### Replace text patterns with applause.
 
-[![NPM](https://nodei.co/npm/grunt-replace.png?downloads=true)](https://www.npmjs.com/package/grunt-replace)
+[![NPM](https://nodei.co/npm/grunt-replace.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/grunt-replace)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-grunt-replace/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-grunt-replace_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-grunt-replace/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-grunt-replace/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-grunt-replace/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-grunt-replace/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-grunt-replace/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-grunt-replace/build/screenCapture.npmPackageListing.svg)
 
@@ -89,13 +94,11 @@
     "main": "tasks/replace.js",
     "maintainers": [
         {
-            "name": "outatime",
-            "email": "afalduto@gmail.com"
+            "name": "outatime"
         }
     ],
     "name": "grunt-replace",
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/outatime/grunt-replace.git"
@@ -107,16 +110,6 @@
     "version": "1.0.1"
 }
 ```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module grunt-replace](#apidoc.module.grunt-replace)
-
-
-
-# <a name="apidoc.module.grunt-replace"></a>[module grunt-replace](#apidoc.module.grunt-replace)
 
 
 
